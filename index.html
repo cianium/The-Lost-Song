@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080808"
+    >
+
+    <meta
+        name="description"
+        content="A quiet listening space for three songs by Anathema."
+    >
+
+    <title>The Lost Song — Anathema</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Ambient background -->
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient__glow ambient__glow--one"></div>
+        <div class="ambient__glow ambient__glow--two"></div>
+        <div class="ambient__grain"></div>
+    </div>
+
+
+    <!-- Main experience -->
+    <main class="experience">
+
+        <!-- Header -->
+        <header class="header">
+
+            <div class="header__artist">
+                ANATHEMA
+            </div>
+
+            <div class="header__year">
+                2014
+            </div>
+
+        </header>
+
+
+        <!-- Central content -->
+        <section class="hero" aria-label="The Lost Song">
+
+            <div class="hero__eyebrow">
+                ANATHEMA
+            </div>
+            
+            <h1 class="hero__title">
+    THE<br>
+    LOST SONG
+</h1>
+
+            <div class="hero__divider" aria-hidden="true"></div>
+
+
+            <!-- Selected fragment -->
+            <div class="fragment" aria-label="Selected lyrics">
+
+                <p class="fragment__line">
+                    The fear is just an illusion.
+                </p>
+
+                <p class="fragment__line">
+                    I can't believe it was just an illusion.
+                </p>
+
+                <p class="fragment__line">
+                    Time can heal all scars concealed.
+                </p>
+
+                <p class="fragment__line">
+                    And life will bring the truth in dream.
+                </p>
+
+                <p class="fragment__line fragment__line--final">
+                    I need you to hold on.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Music player -->
+        <section
+            class="player"
+            aria-label="Music player"
+        >
+
+            <!-- Current track information -->
+            <div class="player__track">
+
+                <div class="player__track-number" id="track-number">
+                    01
+                </div>
+
+                <div class="player__track-info">
+
+                    <span
+                        class="player__track-title"
+                        id="track-title"
+                    >
+                        The Lost Song — Part I
+                    </span>
+
+                    <span
+                        class="player__track-artist"
+                        id="track-artist"
+                    >
+                        Anathema
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Progress -->
+            <div class="progress">
+
+                <span
+                    class="progress__time progress__time--current"
+                    id="current-time"
+                >
+                    00:00
+                </span>
+
+                <div
+                    class="progress__track"
+                    id="progress-track"
+                    role="slider"
+                    aria-label="Song progress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    tabindex="0"
+                >
+                    <div
+                        class="progress__fill"
+                        id="progress-fill"
+                    ></div>
+
+                    <div
+                        class="progress__handle"
+                        id="progress-handle"
+                    ></div>
+                </div>
+
+                <span
+                    class="progress__time progress__time--duration"
+                    id="duration"
+                >
+                    00:00
+                </span>
+
+            </div>
+
+
+            <!-- Controls -->
+            <div class="player__controls">
+
+                <button
+                    class="control control--previous"
+                    id="previous-button"
+                    type="button"
+                    aria-label="Previous track"
+                >
+                    <span aria-hidden="true">−</span>
+                </button>
+
+
+                <button
+                    class="play-button"
+                    id="play-button"
+                    type="button"
+                    aria-label="Play"
+                    aria-pressed="false"
+                >
+                    <span
+                        class="play-button__icon play-button__icon--play"
+                        aria-hidden="true"
+                    >
+                        ▶
+                    </span>
+
+                    <span
+                        class="play-button__icon play-button__icon--pause"
+                        aria-hidden="true"
+                    >
+                        ❚❚
+                    </span>
+                </button>
+
+
+                <button
+                    class="control control--next"
+                    id="next-button"
+                    type="button"
+                    aria-label="Next track"
+                >
+                    <span aria-hidden="true">+</span>
+                </button>
+
+            </div>
+
+
+            <!-- Track list -->
+            <nav
+                class="track-list"
+                aria-label="Tracks"
+            >
+
+                <button
+                    class="track-item track-item--active"
+                    type="button"
+                    data-track="0"
+                    aria-label="Play The Lost Song Part I"
+                    aria-current="true"
+                >
+                    <span class="track-item__number">01</span>
+
+                    <span class="track-item__name">
+                        The Lost Song — Part I
+                    </span>
+                </button>
+
+
+                <button
+                    class="track-item"
+                    type="button"
+                    data-track="1"
+                    aria-label="Play The Lost Song Part II"
+                    aria-current="false"
+                >
+                    <span class="track-item__number">02</span>
+
+                    <span class="track-item__name">
+                        The Lost Song — Part II
+                    </span>
+                </button>
+
+
+                <button
+                    class="track-item"
+                    type="button"
+                    data-track="2"
+                    aria-label="Play The Lost Song Part III"
+                    aria-current="false"
+                >
+                    <span class="track-item__number">03</span>
+
+                    <span class="track-item__name">
+                        The Lost Song — Part III
+                    </span>
+                </button>
+
+            </nav>
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <span>
+                THE LOST SONG
+            </span>
+
+            <span aria-hidden="true">
+                ·
+            </span>
+
+            <span>
+                ANATHEMA
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <!-- Audio element -->
+    <audio
+        id="audio-player"
+        preload="metadata"
+    ></audio>
+
+
+    <!-- Application script -->
+    <script src="script.js"></script>
+
+</body>
+</html>

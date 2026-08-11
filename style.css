@@ -1,0 +1,1315 @@
+/* =========================================================
+   THE LOST SONG — ANATHEMA
+   Premium Minimal Music Experience
+   ========================================================= */
+
+
+/* =========================================================
+   01. DESIGN TOKENS
+   ========================================================= */
+
+:root {
+    --bg: #070707;
+    --bg-deep: #040404;
+
+    --white: rgba(255, 255, 255, 0.94);
+    --white-soft: rgba(255, 255, 255, 0.68);
+    --white-muted: rgba(255, 255, 255, 0.36);
+    --white-faint: rgba(255, 255, 255, 0.16);
+    --white-line: rgba(255, 255, 255, 0.09);
+
+    --display-font: "Cormorant Garamond", Georgia, serif;
+    --ui-font: "Inter", Arial, sans-serif;
+
+    --content-width: 920px;
+    --player-width: 640px;
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+    --transition-fast: 180ms var(--ease-soft);
+    --transition-medium: 450ms var(--ease-out);
+    --transition-slow: 900ms var(--ease-out);
+}
+
+
+/* =========================================================
+   02. RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+
+    background: var(--bg);
+
+    color-scheme: dark;
+
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            ellipse 70% 50% at 50% 30%,
+            rgba(255, 255, 255, 0.025),
+            transparent 70%
+        ),
+        var(--bg);
+
+    color: var(--white);
+
+    font-family: var(--ui-font);
+    font-weight: 300;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    overflow-x: hidden;
+
+    transition:
+        background 1.5s ease;
+}
+
+body.is-playing {
+    background:
+        radial-gradient(
+            ellipse 65% 48% at 50% 32%,
+            rgba(255, 255, 255, 0.042),
+            transparent 72%
+        ),
+        var(--bg);
+}
+
+button {
+    border: 0;
+
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    font: inherit;
+}
+
+button:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.6);
+
+    outline-offset: 6px;
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+}
+
+
+/* =========================================================
+   03. AMBIENT ENVIRONMENT
+   ========================================================= */
+
+.ambient {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+}
+
+.ambient__glow {
+    position: absolute;
+
+    width: min(70vw, 720px);
+    height: min(70vw, 720px);
+
+    border-radius: 50%;
+
+    filter: blur(120px);
+
+    opacity: 0.08;
+
+    will-change: transform, opacity;
+
+    transition:
+        opacity 2s ease,
+        transform 3s var(--ease-out);
+}
+
+.ambient__glow--one {
+    top: -38%;
+    left: 50%;
+
+    transform:
+        translateX(-50%)
+        scale(0.9);
+
+    background: rgba(255, 255, 255, 0.16);
+
+    animation:
+        breathingGlow 18s ease-in-out infinite alternate;
+}
+
+.ambient__glow--two {
+    right: -35%;
+    bottom: -40%;
+
+    transform: scale(0.9);
+
+    background: rgba(210, 210, 210, 0.08);
+
+    animation:
+        breathingGlowTwo 24s ease-in-out infinite alternate;
+}
+
+body.is-playing .ambient__glow {
+    opacity: 0.12;
+}
+
+@keyframes breathingGlow {
+    0% {
+        transform:
+            translateX(-50%)
+            translateY(-10px)
+            scale(0.9);
+    }
+
+    100% {
+        transform:
+            translateX(-50%)
+            translateY(35px)
+            scale(1.04);
+    }
+}
+
+@keyframes breathingGlowTwo {
+    0% {
+        transform:
+            translate3d(0, 0, 0)
+            scale(0.9);
+    }
+
+    100% {
+        transform:
+            translate3d(-40px, -30px, 0)
+            scale(1.06);
+    }
+}
+
+
+/* =========================================================
+   04. FILM GRAIN
+   ========================================================= */
+
+.ambient__grain {
+    position: absolute;
+
+    inset: -50%;
+
+    width: 200%;
+    height: 200%;
+
+    opacity: 0.025;
+
+    pointer-events: none;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.4'/%3E%3C/svg%3E");
+
+    mix-blend-mode: soft-light;
+
+    animation: grainMovement 0.35s steps(2) infinite;
+}
+
+@keyframes grainMovement {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    25% {
+        transform: translate3d(-1%, 1%, 0);
+    }
+
+    50% {
+        transform: translate3d(1%, -1%, 0);
+    }
+
+    75% {
+        transform: translate3d(1%, 1%, 0);
+    }
+
+    100% {
+        transform: translate3d(-1%, -1%, 0);
+    }
+}
+
+
+/* =========================================================
+   05. MAIN EXPERIENCE
+   ========================================================= */
+
+.experience {
+    position: relative;
+
+    z-index: 1;
+
+    width: min(
+        100%,
+        var(--content-width)
+    );
+
+    min-height: 100vh;
+    min-height: 100svh;
+
+    margin: 0 auto;
+
+    padding:
+        max(28px, env(safe-area-inset-top))
+        28px
+        max(28px, env(safe-area-inset-bottom));
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   06. HEADER
+   ========================================================= */
+
+.header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding-top: 6px;
+
+    color: var(--white-muted);
+
+    font-family: var(--ui-font);
+
+    font-size: 8px;
+    font-weight: 400;
+
+    letter-spacing: 0.34em;
+
+    text-transform: uppercase;
+
+    animation:
+        headerReveal 1.2s var(--ease-out) both;
+}
+
+.header__artist {
+    color: var(--white-soft);
+}
+
+.header__year {
+    opacity: 0.55;
+}
+
+@keyframes headerReveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   07. HERO
+   ========================================================= */
+
+.hero {
+    width: min(
+        100%,
+        680px
+    );
+
+    margin:
+        clamp(100px, 17vh, 185px)
+        auto
+        0;
+
+    text-align: center;
+
+    animation:
+        heroReveal 1.5s var(--ease-out) both;
+
+    animation-delay: 120ms;
+}
+
+@keyframes heroReveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   08. EYEBROW
+   ========================================================= */
+
+.hero__eyebrow {
+    margin-bottom: 28px;
+
+    color: var(--white-muted);
+
+    font-family: var(--ui-font);
+
+    font-size: 8px;
+    font-weight: 400;
+
+    letter-spacing: 0.48em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   09. MAIN TITLE
+   ========================================================= */
+
+.hero__title {
+    margin: 0;
+
+    color: var(--white);
+
+    font-family: var(--display-font);
+
+    font-size:
+        clamp(
+            52px,
+            9vw,
+            92px
+        );
+
+    font-weight: 300;
+
+    line-height: 0.88;
+
+    letter-spacing: -0.045em;
+
+    text-wrap: balance;
+}
+
+
+/* =========================================================
+   10. DIVIDER
+   ========================================================= */
+
+.hero__divider {
+    width: 1px;
+
+    height: 48px;
+
+    margin:
+        44px
+        auto
+        42px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent,
+            rgba(255, 255, 255, 0.28),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   11. SELECTED TEXT
+   ========================================================= */
+
+.fragment {
+    width: min(
+        100%,
+        560px
+    );
+
+    margin: 0 auto;
+
+    color: var(--white-soft);
+
+    font-family: var(--display-font);
+
+    font-size:
+        clamp(
+            19px,
+            2.5vw,
+            25px
+        );
+
+    font-weight: 300;
+
+    line-height: 1.52;
+
+    letter-spacing: 0.003em;
+}
+
+.fragment__line {
+    margin: 0 0 8px;
+
+    opacity: 0;
+
+    animation:
+        fragmentReveal 1.1s var(--ease-out) forwards;
+}
+
+.fragment__line:nth-child(1) {
+    animation-delay: 650ms;
+}
+
+.fragment__line:nth-child(2) {
+    animation-delay: 800ms;
+}
+
+.fragment__line:nth-child(3) {
+    animation-delay: 950ms;
+}
+
+.fragment__line:nth-child(4) {
+    animation-delay: 1100ms;
+}
+
+.fragment__line:nth-child(5) {
+    animation-delay: 1250ms;
+}
+
+.fragment__line--final {
+    margin-top: 24px;
+
+    color: var(--white);
+
+    font-size: 1.08em;
+}
+
+@keyframes fragmentReveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(9px);
+
+        filter:
+            blur(3px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+        filter:
+            blur(0);
+    }
+}
+
+
+/* =========================================================
+   12. PLAYER
+   ========================================================= */
+
+.player {
+    width: min(
+        100%,
+        var(--player-width)
+    );
+
+    margin:
+        clamp(82px, 13vh, 145px)
+        auto
+        0;
+
+    animation:
+        playerReveal 1.4s var(--ease-out) both;
+
+    animation-delay: 450ms;
+}
+
+@keyframes playerReveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   13. CURRENT TRACK
+   ========================================================= */
+
+.player__track {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 17px;
+
+    margin-bottom: 26px;
+}
+
+.player__track-number {
+    padding-top: 3px;
+
+    color: var(--white-muted);
+
+    font-size: 8px;
+    font-weight: 400;
+
+    letter-spacing: 0.18em;
+}
+
+.player__track-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.player__track-title {
+    color: var(--white);
+
+    font-family: var(--display-font);
+
+    font-size: 21px;
+    font-weight: 400;
+
+    line-height: 1.05;
+
+    transition:
+        opacity var(--transition-medium);
+}
+
+.player__track-artist {
+    color: var(--white-muted);
+
+    font-size: 7px;
+    font-weight: 400;
+
+    letter-spacing: 0.34em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   14. PROGRESS BAR
+   ========================================================= */
+
+.progress {
+    display: grid;
+
+    grid-template-columns:
+        38px
+        minmax(0, 1fr)
+        38px;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.progress__time {
+    color: var(--white-muted);
+
+    font-family: var(--ui-font);
+
+    font-size: 8px;
+    font-weight: 400;
+
+    letter-spacing: 0.04em;
+
+    font-variant-numeric:
+        tabular-nums;
+}
+
+.progress__time--duration {
+    text-align: right;
+}
+
+.progress__track {
+    position: relative;
+
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    touch-action: none;
+}
+
+.progress__track::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    transition:
+        background var(--transition-fast);
+}
+
+.progress__track:hover::before {
+    background:
+        rgba(255, 255, 255, 0.20);
+}
+
+.progress__fill {
+    position: absolute;
+
+    left: 0;
+
+    width: 0;
+
+    height: 1px;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    pointer-events: none;
+}
+
+.progress__handle {
+    position: absolute;
+
+    left: 0;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: var(--white);
+
+    transform:
+        translateX(-50%);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity var(--transition-fast);
+}
+
+.progress__track:hover
+.progress__handle,
+.progress__track:focus-visible
+.progress__handle {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   15. PLAYER CONTROLS
+   ========================================================= */
+
+.player__controls {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 30px;
+
+    margin-top: 27px;
+}
+
+.control {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+
+    place-items: center;
+
+    color: var(--white-muted);
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.control span {
+    font-family: var(--display-font);
+
+    font-size: 18px;
+    font-weight: 300;
+
+    line-height: 1;
+}
+
+.control:hover {
+    color: var(--white-soft);
+}
+
+.control:active {
+    transform:
+        scale(0.90);
+}
+
+
+/* =========================================================
+   16. PLAY BUTTON
+   ========================================================= */
+
+.play-button {
+    width: 50px;
+    height: 50px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.19);
+
+    border-radius: 50%;
+
+    color: var(--white);
+
+    cursor: pointer;
+
+    transition:
+        background var(--transition-medium),
+        border-color var(--transition-medium),
+        transform var(--transition-fast),
+        box-shadow var(--transition-medium);
+}
+
+.play-button:hover {
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    border-color:
+        rgba(255, 255, 255, 0.38);
+}
+
+body.is-playing .play-button {
+    border-color:
+        rgba(255, 255, 255, 0.34);
+
+    box-shadow:
+        0 0 0 7px
+        rgba(255, 255, 255, 0.018);
+}
+
+.play-button:active {
+    transform:
+        scale(0.91);
+}
+
+.play-button__icon {
+    display: none;
+
+    font-family: var(--ui-font);
+
+    font-size: 8px;
+    font-weight: 400;
+}
+
+.play-button__icon--play {
+    margin-left: 2px;
+}
+
+.play-button__icon--pause {
+    font-size: 7px;
+}
+
+
+/* =========================================================
+   17. TRACK LIST
+   ========================================================= */
+
+.track-list {
+    margin-top: 40px;
+
+    border-top:
+        1px solid
+        var(--white-line);
+}
+
+.track-item {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 56px;
+
+    display: grid;
+
+    grid-template-columns:
+        38px
+        minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 12px;
+
+    border-bottom:
+        1px solid
+        var(--white-line);
+
+    color: var(--white-muted);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition-medium),
+        padding-left var(--transition-medium),
+        background var(--transition-medium);
+}
+
+.track-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 50%;
+
+    width: 0;
+    height: 1px;
+
+    background:
+        rgba(255, 255, 255, 0.70);
+
+    transform:
+        translateY(-50%);
+
+    transition:
+        width var(--transition-medium);
+}
+
+.track-item:hover {
+    color: var(--white-soft);
+
+    padding-left: 7px;
+
+    background:
+        rgba(255, 255, 255, 0.014);
+}
+
+.track-item--active {
+    color: var(--white);
+}
+
+.track-item--active::before {
+    width: 16px;
+}
+
+.track-item__number {
+    font-size: 8px;
+    font-weight: 400;
+
+    letter-spacing: 0.14em;
+
+    opacity: 0.65;
+}
+
+.track-item__name {
+    font-family: var(--display-font);
+
+    font-size: 17px;
+    font-weight: 400;
+
+    line-height: 1.05;
+}
+
+
+/* =========================================================
+   18. FOOTER
+   ========================================================= */
+
+.footer {
+    margin-top: auto;
+
+    padding:
+        78px
+        0
+        4px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: var(--white-muted);
+
+    font-size: 6px;
+    font-weight: 400;
+
+    letter-spacing: 0.32em;
+
+    text-transform: uppercase;
+
+    animation:
+        footerReveal 1.2s var(--ease-out) both;
+
+    animation-delay: 900ms;
+}
+
+@keyframes footerReveal {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(7px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   19. LOADING STATE
+   ========================================================= */
+
+body.is-loading
+.player__track-title {
+    opacity: 0.55;
+}
+
+body.is-loading
+.progress__fill {
+    opacity: 0.4;
+}
+
+
+/* =========================================================
+   20. PLAYING STATE
+   ========================================================= */
+
+body.is-playing
+.ambient__glow--one {
+    animation-duration: 11s;
+}
+
+body.is-playing
+.ambient__glow--two {
+    animation-duration: 16s;
+}
+
+
+/* =========================================================
+   21. TABLET
+   ========================================================= */
+
+@media (min-width: 700px) {
+
+    .experience {
+        padding-left: 42px;
+        padding-right: 42px;
+    }
+
+    .hero {
+        margin-top:
+            clamp(
+                120px,
+                17vh,
+                190px
+            );
+    }
+
+    .fragment {
+        font-size: 24px;
+    }
+
+    .player {
+        margin-top:
+            clamp(
+                90px,
+                13vh,
+                140px
+            );
+    }
+}
+
+
+/* =========================================================
+   22. MOBILE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+    .experience {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .header {
+        font-size: 7px;
+
+        letter-spacing:
+            0.25em;
+    }
+
+    .hero {
+        margin-top: 92px;
+    }
+
+    .hero__eyebrow {
+        margin-bottom: 24px;
+
+        font-size: 7px;
+
+        letter-spacing:
+            0.38em;
+    }
+
+    .hero__title {
+        font-size:
+            clamp(
+                48px,
+                15vw,
+                72px
+            );
+
+        line-height: 0.90;
+    }
+
+    .hero__divider {
+        height: 36px;
+
+        margin:
+            36px
+            auto
+            34px;
+    }
+
+    .fragment {
+        font-size: 18px;
+
+        line-height: 1.58;
+    }
+
+    .fragment__line {
+        margin-bottom: 8px;
+    }
+
+    .fragment__line--final {
+        margin-top: 20px;
+    }
+
+    .player {
+        margin-top: 82px;
+    }
+
+    .player__track-title {
+        font-size: 19px;
+    }
+
+    .progress {
+        grid-template-columns:
+            34px
+            minmax(0, 1fr)
+            34px;
+
+        gap: 8px;
+    }
+
+    .player__controls {
+        margin-top: 24px;
+
+        gap: 25px;
+    }
+
+    .play-button {
+        width: 48px;
+        height: 48px;
+    }
+
+    .track-list {
+        margin-top: 34px;
+    }
+
+    .track-item {
+        min-height: 52px;
+    }
+
+    .track-item__name {
+        font-size: 16px;
+    }
+
+    .footer {
+        padding-top: 64px;
+
+        padding-bottom:
+            max(
+                4px,
+                env(safe-area-inset-bottom)
+            );
+    }
+}
+
+
+/* =========================================================
+   23. VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .experience {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .hero {
+        margin-top: 78px;
+    }
+
+    .hero__title {
+        font-size: 44px;
+    }
+
+    .fragment {
+        font-size: 17px;
+    }
+
+    .player {
+        margin-top: 70px;
+    }
+
+    .player__controls {
+        gap: 21px;
+    }
+}
+
+
+/* =========================================================
+   24. LANDSCAPE MOBILE
+   ========================================================= */
+
+@media (
+    max-height: 560px
+) and (
+    orientation: landscape
+) {
+
+    .experience {
+        padding-top: 22px;
+    }
+
+    .hero {
+        margin-top: 55px;
+    }
+
+    .hero__title {
+        font-size: 50px;
+    }
+
+    .hero__divider {
+        height: 24px;
+
+        margin:
+            25px
+            auto;
+    }
+
+    .fragment {
+        font-size: 17px;
+    }
+
+    .player {
+        margin-top: 55px;
+    }
+
+    .footer {
+        padding-top: 50px;
+    }
+}
+
+
+/* =========================================================
+   25. ACCESSIBILITY — REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+    }
+}
