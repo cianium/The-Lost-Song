@@ -6,7 +6,7 @@
 
 **HTML · CSS · Vanilla JavaScript**
 
-[![Pages](https://github.com/cianium/The-Lost-Song/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/cianium/The-Lost-Song/actions)
+[GitHub Pages deployments](https://github.com/cianium/The-Lost-Song/actions)
 ![Status](https://img.shields.io/badge/Status-Frontend%20Demo-6B7280)
 ![Release](https://img.shields.io/badge/Release-Not%20published-6B7280)
 
